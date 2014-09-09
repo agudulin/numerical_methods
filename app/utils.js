@@ -1,9 +1,5 @@
 var math = require("mathjs");
 
-function clone(a) {
-  return JSON.parse(JSON.stringify(a));
-}
-
 function print(value) {
   var precision = 14;
   console.log(math.format(value, precision));
@@ -31,6 +27,5 @@ function printMatrix(matrix, precision) {
   console.log("");
 }
 
-exports.clone = clone;
 exports.print = print;
 exports.printMatrix = printMatrix;

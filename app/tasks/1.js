@@ -31,7 +31,7 @@ var solve = function() {
   console.log("## Контрольный вектор для исходных данных [b^]");
   utils.printMatrix(controlVector);
 
-  var extendedMatrix = utils.clone(matrix);
+  var extendedMatrix = math.clone(matrix);
   // and add two vectors to the end
   for(var i = 0; i < extendedMatrix.length; i++) {
     extendedMatrix[i].push(vector[i]);

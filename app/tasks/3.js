@@ -12,7 +12,7 @@ var yakobiMethod = function(matrixA, vectorB) {
   var iterationsCount = 0;
   while (!converge(x_k1, x_k)) {
     ++iterationsCount;
-    x_k = utils.clone(x_k1);
+    x_k = math.clone(x_k1);
     for (var i = 0; i < matrixA.length; i++) {
       var tmpSum = 0;
       for (var j = 0; j < matrixA.length; j++) {
@@ -39,7 +39,7 @@ var nekrasovMethod = function(matrixA, vectorB) {
   var iterationsCount = 0;
   while (!converge(x_k_prev, x_k)) {
     ++iterationsCount;
-    x_k_prev = utils.clone(x_k);
+    x_k_prev = math.clone(x_k);
     for (var i = 0; i < matrixA.length; i++) {
       var tmpSum = 0;
       for (var j = 0; j < i; j++) {
