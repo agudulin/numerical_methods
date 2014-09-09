@@ -96,7 +96,7 @@ var solve = function() {
   console.log("----------------------------------------\n");
 
   console.log("## Метод Некрасова");
-  var result = nekrasovMethod(matrix, vector);
+  result = nekrasovMethod(matrix, vector);
   console.log("-- Количество итераций: " + result.iterations);
   utils.printMatrix(result.vectorX, 10);
   
