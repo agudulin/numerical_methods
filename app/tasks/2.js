@@ -84,13 +84,7 @@ var solve = function() {
   utils.printMatrix(vectorX, 10);
 
   console.log("## Проверка [A*x = b]");
-  var debugVector = math.zeros([matrix.length]);
-  for(var i = 0; i < matrix.length; i++) {
-    for(var j = 0; j < matrix.length; j++) {
-      debugVector[i] += matrix[i][j] * vectorX[j];
-    }
-  }
-  utils.printMatrix(debugVector, 10);
+  utils.printMatrix(math.multiply(matrix, vectorX), 10);
 
 }
 
