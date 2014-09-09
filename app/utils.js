@@ -13,6 +13,9 @@ function printMatrix(matrix, precision) {
   if (precision === undefined) {
      precision = 4;
   }
+  if (math.type.Matrix.isMatrix(matrix)) {
+    matrix = matrix.toArray();
+  }
   var matrixSize = matrix.length;
   matrix.forEach(function (value, index) {
     var line = "";
