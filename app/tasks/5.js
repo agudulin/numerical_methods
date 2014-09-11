@@ -18,6 +18,11 @@ var beta_2  =  1;
 var A       =  0.8;
 var B       = -0.1;
 
+var modelA  = 2.6;
+var modelB  = 5;
+// A = modelA;
+// B = modelB;
+
 var solve = function() {
   console.log("★★★ Метод прогонки ★★★\n");
 
@@ -40,7 +45,10 @@ var solve = function() {
   var p = function(x) { return -math.cos(x) / (1 + x); };
   var q = function(x) { return x - 2; };
   var f = function(x) { return x + 1; };
-  var modelF = function(x) { return math.pow(x, 3) + 2 * x - 3; };
+  var modelF = function(x) {
+    return 6*x - math.cos(x)/(1+x)*(x*math.pow(x, 2) + 2) - (2-x)*(math.pow(x, 3) + 2*x - 3)
+  };
+  // f = modelF;
 
   var a_i = function(x) { return 1 + (h * p(x)) / 2; };
   var b_i = function(x) { return 2 - math.pow(h, 2) * q(x); };
@@ -119,10 +127,7 @@ var solve = function() {
   for(var i = N-1; i >= 0; i--) {
     y[i] = u[i] * y[i + 1] + v[i];
   }
-  // var modelY = math.zeros([N+1, N+1]);
-  // for (var i = 0; i <= N; i++) {
-  //   modelY[i] = modelF(x[i]);
-  // }
+
   console.log("\n## Результат обратного хода (y_i):");
   for(var i = 0; i < y.length; i++) {
     console.log(math.format(y[i], 5));
@@ -136,8 +141,13 @@ var solve = function() {
     }
   }
   for(var i = 0; i < result.length; i++) {
-    console.log(math.format(result[i], 5) + "\t" + math.format(gi[i], 5));
+    console.log(math.format(result[i], 10) + "\t" + math.format(gi[i], 10));
   }
+
+  // console.log("\nx_i\ty_i\t\tmodelF(x_i):");
+  // for(var i = 0; i < y.length; i++) {
+  //   console.log(math.format(x[i], 2) + "\t" + math.format(y[i], 7) + "\t" + math.format((math.pow(x[i], 3) + 2*x[i] - 3), 5));
+  // }
 
 }
 
