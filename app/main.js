@@ -3,9 +3,11 @@ var task2 = require("./tasks/2");
 var task3 = require("./tasks/3");
 var task4 = require("./tasks/4");
 var task5 = require("./tasks/5");
+var task6 = require("./tasks/6");
 
 // task1.solve();
 // task2.solve();
 // task3.solve();
 // task4.solve();
-task5.solve();
+// task5.solve();
+task6.solve();
