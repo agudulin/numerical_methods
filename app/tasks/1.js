@@ -40,7 +40,7 @@ var solve = function() {
 
   // utils.printMatrix(extendedMatrix);
 
-  // forward elimination
+  // прямой ход
   // ...
   for(var i = 0; i < matrix.length ; i++) {
     var p = extendedMatrix[i][i];
@@ -55,7 +55,7 @@ var solve = function() {
   console.log("## Результат прямого хода [A, b, b^]");
   utils.printMatrix(extendedMatrix);
 
-  // backward elimination
+  // обратный ход
   // ...
   var x = math.zeros([vector.length]);
   for(var i = matrix.length - 1; i >= 0; i--) {

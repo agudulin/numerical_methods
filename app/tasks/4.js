@@ -3,33 +3,38 @@
 var math = require("mathjs");
 var utils = require("../utils");
 
-var EPS = 0.00001;
+var EPS = 0.000001;
 
 var powerMethod = function(matrix) {
   var y_k = math.ones([matrix.length]);
-  var y_k1 = math.zeros([matrix.length]);
-  for (var i = 0; i < matrix.length; i++) {
-    for (var j = 0; j < matrix.length; j++) {
-      y_k1[i] += matrix[i][j] * y_k[j];
-    }
-  }
+  var y_k1 = math.multiply(matrix, y_k);
+
+  console.log("Начальный вектор Y_0: ");
+  utils.printMatrix(y_k);
 
   var l_k = y_k1[0] / y_k[0];
+  var l_k__1 = y_k1[1] / y_k[1];
+  var l_k__2 = y_k1[2] / y_k[2];
   var l_k1 = l_k;
 
+  console.log("Приближения \\lambda: ");
+  console.log(l_k1 + "\t" + l_k__1 + "\t" + l_k__2);
+  var iterationsCount = 1;
   do {
+    iterationsCount++;
     l_k = l_k1;
     y_k = math.clone(y_k1);
-    y_k1 = math.zeros([matrix.length]);
-
-    for (var i = 0; i < matrix.length; i++) {
-      for (var j = 0; j < matrix.length; j++) {
-        y_k1[i] += matrix[i][j] * y_k[j];
-      }
-    }
+    y_k1 = math.multiply(matrix, y_k);
 
     l_k1 = y_k1[0] / y_k[0];
+    l_k__1 = y_k1[1] / y_k[1];
+    l_k__2 = y_k1[2] / y_k[2];
+
+    console.log(l_k1 + "\t" + l_k__1 + "\t" + l_k__2);
+
   } while(math.abs(l_k - l_k1) > EPS);
+
+  console.log("\nКоличество итераций: " + iterationsCount);
 
   return l_k1;
 }
@@ -68,7 +73,10 @@ var yakobiMethod = function(matrix) {
   var matrixA_k = math.matrix([matrix.length, matrix.length]);
   var matrixA_k1 = math.clone(matrix);
 
+  var iterationsCount = 0;
+
   do {
+    iterationsCount++;
     matrixA_k = math.clone(matrixA_k1);
     // ищем максимальный по модулю внедиагональный элемент
     maxEl = findAbsMaxElementIdxs(matrixA_k);
@@ -78,7 +86,7 @@ var yakobiMethod = function(matrix) {
     var s = math.sin(phi);
     var c = math.cos(phi);
 
-    // пересчитываем значения элементов матрицы A_k1
+    // пересчитываем значения элементов матрицы A_k1 по известным формулам
     matrixA_k1[maxEl.i][maxEl.j] = 0;
     matrixA_k1[maxEl.j][maxEl.i] = 0;
 
@@ -101,10 +109,11 @@ var yakobiMethod = function(matrix) {
       }
     }
 
-    // utils.printMatrix(matrixA_k1);
+    utils.printMatrix(matrixA_k1);
 
   } while(!converge(matrixA_k1, matrixA_k));
 
+  console.log("Количество итераций: "+ iterationsCount);
   return matrixA_k1;
 }
 
@@ -112,13 +121,16 @@ var modifiedYakobiMethod = function(matrix) {
   var matrixA_k = math.matrix([matrix.length, matrix.length]);
   var matrixA_k1 = math.clone(matrix);
 
+  var iterationsCount = 0;
+
   do {
+    iterationsCount++;
     matrixA_k = math.clone(matrixA_k1);
     // ищем максимальный по модулю внедиагональный элемент
     maxEl = findAbsMaxElementIdxs(matrixA_k);
 
     // считаем угол поворота
-    var phi = math.atan(2 * matrixA_k[maxEl.i][maxEl.j] / (matrixA_k[maxEl.i][maxEl.i] - matrixA_k[maxEl.j][maxEl.j])) / 2;
+    var phi = 0.5 * math.atan(2 * matrixA_k[maxEl.i][maxEl.j] / (matrixA_k[maxEl.i][maxEl.i] - matrixA_k[maxEl.j][maxEl.j]));
 
     // 1 на главной диагонали, остальные нули
     var matrixU = math.eye([matrix.length]);
@@ -134,10 +146,12 @@ var modifiedYakobiMethod = function(matrix) {
     
     // считаем A_k1 = U_t * A_K * U
     matrixA_k1 = math.multiply(math.multiply(matrixU_t, matrixA_k), matrixU);
-    // utils.printMatrix(matrixA_k1);
+    
+    utils.printMatrix(matrixA_k1);
 
   } while(!converge(matrixA_k1, matrixA_k));
 
+  console.log("Количество итераций: "+ iterationsCount);
   return matrixA_k1;
 }
 
@@ -145,9 +159,9 @@ var solve = function() {
   console.log("★★★ Степенной метод и метод Якоби ★★★\n");
 
   var matrix = [
-    [ 1.8832, -1.5564, -0.3245],
-    [-1.5564,  1.9911, -0.2518],
-    [-0.3245, -0.2518,  0.9738]
+    [ 2.4, 1.2, -0.3],
+    [1.2,  1.9, 1.4],
+    [-0.3, 1.4, 0.8]
   ];
 
   console.log("## Исходная матрица [A]");
@@ -161,15 +175,15 @@ var solve = function() {
 
   console.log("\n----------------------------------------\n");
 
-  console.log("## Метод Якоби");
+  console.log("## Метод Якоби (считаем элементы по формулам)");
   var resultMatrix = yakobiMethod(matrix);
-  utils.printMatrix(resultMatrix);
+  utils.printMatrix(resultMatrix, 7);
 
   console.log("\n----------------------------------------\n");
 
-  console.log("## Модифицированный метод Якоби");
+  console.log("## Метод Якоби (A_k1 = U_t * A_K * U)");
   resultMatrix = modifiedYakobiMethod(matrix);
-  utils.printMatrix(resultMatrix);
+  utils.printMatrix(resultMatrix, 7);
 
 }
 
