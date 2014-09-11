@@ -6,7 +6,7 @@ var utils = require("../utils");
 function sum1_i(matrix, i, j) {
   var sum = 0;
   for(var k = 0; k < i; k++) {
-    sum += matrix[k][i] * matrix[k][j];
+    sum = math.add(sum, math.multiply(matrix[k][i], matrix[k][j]));
   }
   return sum;
 }
@@ -15,7 +15,7 @@ var solve = function() {
   console.log("★★★ Метод квадратных корней ★★★\n");
 
   var matrix = [
-    [0.9234, 0.5311, 0.2,    0.3],
+    [-0.9234, 0.5311, 0.2,    0.3],
     [0.5311, 1.0013, 1,      0.4],
     [0.2,    1,      1.5741, 0.3],
     [0.3,    0.4,    0.3,    1.9832]
@@ -33,9 +33,9 @@ var solve = function() {
   for(var i = 0; i < matrixS.length; i++) {
     for(var j = 0; j < matrixS.length; j++) {
       if(i == j) {
-        matrixS[i][i] = math.sqrt(matrix[i][i] - sum1_i(matrixS, i, i));
+        matrixS[i][i] = math.sqrt(math.subtract(matrix[i][i], sum1_i(matrixS, i, i)));
       } else if(j > i) {
-        matrixS[i][j] = (matrix[i][j] - sum1_i(matrixS, i, j)) / matrixS[i][i];
+        matrixS[i][j] = math.divide(math.subtract(matrix[i][j], sum1_i(matrixS, i, j)), matrixS[i][i]);
       }
     }
   }
@@ -55,7 +55,7 @@ var solve = function() {
   for(var i = 0; i < matrix.length; i++) {
     for(var j = 0; j < matrix.length; j++) {
       for(var k = 0; k < matrix.length; k++) {
-        debugMatrix[i][j] += matrixS_t[i][k] * matrixS[k][j];
+        debugMatrix[i][j] = math.add(debugMatrix[i][j], math.multiply(matrixS_t[i][k], matrixS[k][j]));
       }
     }
   }
@@ -66,9 +66,9 @@ var solve = function() {
   for(var i = 0; i < matrix.length; i++) {
     var sum = 0;
     for(var k = 0; k < i + 1; k++) {
-      sum += matrixS_t[i][k] * vectorY[k];
+      sum = math.add(sum, math.multiply(matrixS_t[i][k], vectorY[k]));
     }
-    vectorY[i] = (vector[i] - sum) / matrixS_t[i][i];
+    vectorY[i] = math.divide(math.subtract(vector[i], sum), matrixS_t[i][i]);
   }
   utils.printMatrix(vectorY, 10);
 
@@ -77,9 +77,9 @@ var solve = function() {
   for(var i = matrix.length - 1; i >= 0; i--) {
     var sum = 0;
     for(var k = matrix.length - 1; k >= i; k--) {
-      sum += matrixS[i][k] * vectorX[k];
+      sum = math.add(sum, math.multiply(matrixS[i][k], vectorX[k]));
     }
-    vectorX[i] = (vectorY[i] - sum) / matrixS[i][i];
+    vectorX[i] = math.divide(math.subtract(vectorY[i], sum), matrixS[i][i]);
   }
   utils.printMatrix(vectorX, 10);
 

@@ -14,7 +14,9 @@ var solve = function() {
     [0,     0,     4.33,  3.45, -3.45]
   ];
 
-  var vector = [6.27, -12.02, 12.4, 12.48, 12.92];
+  // var vector = [6.27, -12.02, 12.4, 12.48, 12.92];
+  // возьмем вектор = matrix * [1, 1, 1, ..], чтобы получить в ответе [1, 1, 1, ..]
+  var vector = math.multiply(matrix, math.ones([matrix.length]));
 
   var controlVector = math.zeros([vector.length]);
   for(var i = 0; i < matrix.length; i++) {

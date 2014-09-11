@@ -15,7 +15,9 @@ function printMatrix(matrix, precision) {
   var matrixSize = matrix.length;
   matrix.forEach(function (value, index) {
     var line = "";
-    if (typeof value == "object") {
+    if (math.type.Complex.isComplex(value)) {
+      console.log(math.format(value, precision));
+    } else if (typeof value == "object") {
       value.forEach(function (val, idx) {
         line += math.format(val, precision) + "\t"
       });
